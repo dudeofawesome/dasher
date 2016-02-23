@@ -11,6 +11,7 @@ module.exports = {
         });
     },
     start: function (callback) {
+        module.exports.app.dock.hide();
         console.log('loading');
         var win = new electron.BrowserWindow({
             width: 100,
