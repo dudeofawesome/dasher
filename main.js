@@ -18,15 +18,19 @@ module.exports = {
             height: 100,
             transparent: true,
             show: false,
-            frame: false
+            frame: false,
+            hasShadow: false
         });
         win.loadURL('http://127.0.0.1:41416');
         win.maximize();
         win.setResizable(false);
         win.setMovable(false);
+        win.setFullScreenable(false);
         win.setMinimizable(false);
+        win.setClosable(false);
+        win.setVisibleOnAllWorkspaces(true);
+        win.setIgnoreMouseEvents(true);
         win.setSkipTaskbar(true);
-        win.setHasShadow(false);
         win.show();
 
         if (callback) {
