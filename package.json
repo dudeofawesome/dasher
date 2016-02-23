@@ -1,0 +1,35 @@
+{
+  "name": "dasher",
+  "version": "0.0.1",
+  "description": "Cross platform widget system",
+  "main": "main.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dudeofawesome/dasher.git"
+  },
+  "keywords": [
+    "widget",
+    "widgets",
+    "dashboard",
+    "geektool",
+    "geek",
+    "tool",
+    "übersicth",
+    "ubersicht",
+    "uebersicht",
+    "overview"
+  ],
+  "author": "Louis Orleans <louis@orleans.io> (http://orleans.io/)",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/dudeofawesome/dasher/issues"
+  },
+  "homepage": "https://github.com/dudeofawesome/dasher",
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "electron-prebuilt": "0.36.8"
+  }
+}
