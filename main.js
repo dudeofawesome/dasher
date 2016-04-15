@@ -1,49 +1,51 @@
-var electron = require('electron');
+'use strict';
+
+const log = require('book');
+
+const widgetLoader = require('./modules/widget-loader');
+const widgetServer = require('./modules/widget-server');
+const widgetViewer = require('./modules/widget-viewer');
 
 module.exports = {
-    init: function (callback) {
-        module.exports.app = electron.app;
-
-        module.exports.app.on('ready', function() {
-            if (callback) {
-                callback();
-            }
+    init: function () {
+        log.info('Initializing Dasher');
+        return new Promise((resolve, reject) => {
+            Promise.all([widgetLoader.init(), widgetServer.init(widgetLoader), widgetViewer.init(widgetServer)]).then(() => {
+                resolve();
+            }).catch((err) => {
+                console.log(err);
+                reject(err);
+            });
         });
     },
-    start: function (callback) {
-        module.exports.app.dock.hide();
-        console.log('loading');
-        var win = new electron.BrowserWindow({
-            width: 100,
-            height: 100,
-            transparent: true,
-            show: false,
-            frame: false,
-            hasShadow: false
+    start: function () {
+        log.info('Starting Dasher');
+        return new Promise((resolve, reject) => {
+            Promise.all([widgetLoader.start(), widgetServer.start(), widgetViewer.start()]).then(() => {
+                resolve();
+            }).catch((err) => {
+                console.log(err);
+                reject(err);
+            });
         });
-        win.loadURL('http://127.0.0.1:41416');
-        win.maximize();
-        win.setResizable(false);
-        win.setMovable(false);
-        win.setFullScreenable(false);
-        win.setMinimizable(false);
-        win.setClosable(false);
-        win.setVisibleOnAllWorkspaces(true);
-        win.setIgnoreMouseEvents(true);
-        win.setSkipTaskbar(true);
-        win.show();
-
-        if (callback) {
-            callback();
-        }
     },
-    stop: function (callback) {
-        if (callback) {
-            callback();
-        }
+    stop: function () {
+        log.info('Stopping Dasher');
+        return new Promise((resolve, reject) => {
+            Promise.all([widgetLoader.stop(), widgetServer.stop(), widgetViewer.stop()]).then(() => {
+                resolve();
+            }).catch((err) => {
+                console.log(err);
+                reject(err);
+            });
+        });
     }
 };
 
-module.exports.init(function () {
+module.exports.init().then(() => {
     module.exports.start();
+});
+
+process.on('exit', () => {
+    module.exports.stop();
 });
