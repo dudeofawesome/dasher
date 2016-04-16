@@ -66,57 +66,39 @@ let widgetLoader = {
 
     reloadWidgets: function () {
         return new Promise((resolve) => {
-            widgetLoader.activatedPlugins = [];
-            log.info('Reloading widgets…');
-            var pluginsToLoad = 0;
-            var pluginsLoaded = 0;
-            function loadPlugins (folder) {
-                if (folder === undefined) {
-                    folder = widgetLoader.pluginsFolder;
-                }
-                // TODO: if there are no plugins to load, then 'it never finishes' loading them
-                fs.readdir(folder, function (err, files) {
-                    pluginsToLoad += files.length;
-                    for (var file in files) {
-                        (function (_file) {
-                            fs.stat(folder + files[_file], function (err, stats) {
-                                if (stats.isFile()) {
-                                    // TODO: make this more efficient. Maybe just catching an error on a bad require would do it
-                                    if (files[_file].split('.').reverse()[0].toLowerCase() === 'js') {
-                                        var plugin = require(folder + files[_file])(irisAPI);
-                                        widgetLoader.loadedPlugins[plugin.name] = plugin;
-                                        GUI.addPlugin(plugin.name);
-                                        pluginsLoaded++;
-                                        console.log('  ' + plugin.name);
-                                        if (pluginsLoaded >= pluginsToLoad) {
-                                            widgetLoader.activatedPlugins = activatedPlugins;
+            widgetLoader.deactivatePlugins();
+            console.log('Loading plugins…');
 
-                                            resolve();
-                                        }
-                                    } else {
-                                        pluginsToLoad--;
-                                    }
-                                } else if (stats.isDirectory()) {
-                                    pluginsToLoad--;
-                                    loadPlugins(folder + files[_file] + '/');
-                                }
-                            });
-                        })(file);
+            let modules = [];
+            let foldersToWalk = 0;
+
+            let walk = (dir) => {
+                foldersToWalk++;
+                fs.readDirAsync(dir).then((err, files) => {
+                    foldersToWalk--;
+                    if (!err) {
+                        for (let i in files) {
+                            walk(`${dir}/${files[i]}`);
+                        }
+                    }
+                    if (foldersToWalk <= 0) {
+                        resolve(modules);
                     }
                 });
-            }
+            };
+            walk(widgetLoader.pluginsFolder);
 
-            fs.access(widgetLoader.pluginsFolder, function (err) {
-                if (!err) {
-                    loadPlugins();
-                } else {
-                    log.warn('Could\'t find plugins folder');
-                    fs.mkdirp(widgetLoader.pluginsFolder, function () {
-                        log.info('Created plugins folder at ' + widgetLoader.pluginsFolder);
-                        loadPlugins();
-                    });
-                }
-            });
+            // fs.access(widgetLoader.pluginsFolder, function (err) {
+            //     if (!err) {
+            //         loadPlugins();
+            //     } else {
+            //         log.warn('Could\'t find plugins folder');
+            //         fs.mkdirp(widgetLoader.pluginsFolder, function () {
+            //             log.info('Created plugins folder at ' + widgetLoader.pluginsFolder);
+            //             loadPlugins();
+            //         });
+            //     }
+            // });
         });
     },
     reloadPluginsSync: function (callback) {
