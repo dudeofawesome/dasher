@@ -72,21 +72,22 @@ let widgetLoader = {
             let modules = [];
             let foldersToWalk = 0;
 
-            let walk = (dir) => {
-                foldersToWalk++;
-                fs.readDirAsync(dir).then((err, files) => {
-                    foldersToWalk--;
-                    if (!err) {
-                        for (let i in files) {
-                            walk(`${dir}/${files[i]}`);
-                        }
+            fs.readDirAsync(widgetLoader.pluginsFolder).then((err, widgetFolders) => {
+                if (!err) {
+                    foldersToWalk = widgetFolders.length;
+                    for (let i in widgetFolders) {
+                        fs.isDirectoryAsync(`${widgetLoader.pluginsFolder}/${widgetFolders[i]}`).then((isDirectory) => {
+                            foldersToWalk--;
+                            if (isDirectory) {
+                                modules.push(require(`${widgetLoader.pluginsFolder}/${widgetFolders[i]}`));
+                            }
+                            if (foldersToWalk <= 0) {
+                                resolve(modules);
+                            }
+                        });
                     }
-                    if (foldersToWalk <= 0) {
-                        resolve(modules);
-                    }
-                });
-            };
-            walk(widgetLoader.pluginsFolder);
+                }
+            });
 
             // fs.access(widgetLoader.pluginsFolder, function (err) {
             //     if (!err) {
