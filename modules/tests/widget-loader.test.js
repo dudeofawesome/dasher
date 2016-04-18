@@ -2,17 +2,22 @@ var testing = require('../widget-loader');
 
 require('should');
 
-describe('utils.js tests', function () {
-    it('Initiale widget-loader', function (done) {
-        testing.init().then;
-        testing.should.be.an.instanceOf(Object);
+describe('widget-loader.js tests', () => {
+    it('Initialize and start widget-loader', (done) => {
+        testing.init().then(() => {
+            testing.start().then(() => {
+                testing.should.be.an.instanceOf(Object);
+                testing.loadedWidgets.should.be.an.instanceOf(Array);
 
-        done();
+                done();
+            });
+        });
     });
-    it('stop servers', function (done) {
-        testing = testing.init();
-        testing.stopServer().should.equal(true);
+    it('Stop widget-loader', (done) => {
+        testing.stop().then(() => {
+            testing.should.equal(true);
 
-        done();
+            done();
+        });
     });
 });

@@ -9,7 +9,7 @@ let widgetLoader = {
     loadedWidgets: [],
     activatedWidgets: [],
 
-    init: function () {
+    init: () => {
         return new Promise((resolve) => {
             log.info('Initializing widget-loader…');
 
@@ -44,27 +44,27 @@ let widgetLoader = {
             });
         });
     },
-    start: function () {
+    start: () => {
         return new Promise((resolve) => {
             log.info('Starting widget-loader…');
 
-            this.reloadWidgets().then(() => {
+            widgetLoader.reloadWidgets().then(() => {
                 resolve();
             });
 
         });
     },
-    stop: function () {
+    stop: () => {
         return new Promise((resolve) => {
             log.info('Stopping widget-loader…');
 
-            // this.unloadPlugins();
+            // widgetLoader.unloadPlugins();
 
             resolve();
         });
     },
 
-    reloadWidgets: function () {
+    reloadWidgets: () => {
         return new Promise((resolve) => {
             widgetLoader.loadedWidgets = [];
             widgetLoader.activatedWidgets = [];
@@ -74,12 +74,12 @@ let widgetLoader = {
             function loadPlugins (searchFolder) {
                 // TODO: if there are no plugins to load, then 'it never finishes' loading them
                 log.info(`Looking in ${searchFolder}`);
-                fs.readdir(searchFolder, function (err, folders) {
+                fs.readdir(searchFolder, (err, folders) => {
                     pluginsToLoad += folders.length;
                     for (var folder in folders) {
                         log.info(`Trying out ${searchFolder}/${folders[folder]}`);
                         (function (_folder) {
-                            fs.stat(`${searchFolder}/${folders[_folder]}`, function (err, stats) {
+                            fs.stat(`${searchFolder}/${folders[_folder]}`, (err, stats) => {
                                 if (stats.isDirectory()) {
                                     var plugin = require(`${searchFolder}/${folders[_folder]}`);
                                     widgetLoader.loadedWidgets.push(plugin);

@@ -5,6 +5,25 @@ const log = require('book');
 module.exports = (electron) => {
     let widgetViewer = {
         app: undefined,
+        window: undefined,
+        tray: undefined,
+        trayMenu: [
+            {label: 'About Dasher', click: () => {
+                electron.shell.openExternal('https://github.com/dudeofawesome/dasher/');
+            }},
+            {type: 'separator'},
+            {label: 'Open Widgets Folder', click: () => {
+                // electron.shell.showItemInFolder();
+            }},
+            {type: 'separator'},
+            {label: 'Show Debug Console', click: () => {
+                widgetViewer.window.webContents.openDevTools({detach: true});
+            }},
+            {type: 'separator'},
+            {label: 'Quit', click: () => {
+                widgetViewer.app.quit();
+            }}
+        ],
 
         init: () => {
             return new Promise((resolve) => {
@@ -32,30 +51,33 @@ module.exports = (electron) => {
                 widgetViewer.app.dock.hide();
                 var electronScreen = electron.screen;
                 var size = electronScreen.getPrimaryDisplay().workAreaSize;
-                var win = new electron.BrowserWindow({
+                widgetViewer.window = new electron.BrowserWindow({
                     width: size.width,
                     height: size.height,
                     transparent: true,
                     show: false,
                     frame: false,
-                    hasShadow: false // ,
-                    // type: 'desktop'
+                    hasShadow: false,
+                    type: 'desktop'
                 });
-                win.loadURL(`file://${__dirname}/pages/widget-viewer/widget-viewer.html`);
-                win.maximize();
-                win.setResizable(false);
-                win.setMovable(false);
-                win.setFullScreenable(false);
-                win.setMinimizable(false);
-                // win.setClosable(false);
-                // win.setVisibleOnAllWorkspaces(true);
-                // win.setIgnoreMouseEvents(true);
-                win.setSkipTaskbar(true);
-                win.show();
-                win.webContents.openDevTools();
+                widgetViewer.window.loadURL(`file://${__dirname}/resources/pages/widget-viewer/widget-viewer.html`);
+                widgetViewer.window.maximize();
+                widgetViewer.window.setResizable(false);
+                widgetViewer.window.setMovable(false);
+                widgetViewer.window.setFullScreenable(false);
+                widgetViewer.window.setMinimizable(false);
+                // widgetViewer.window.setClosable(false);
+                widgetViewer.window.setVisibleOnAllWorkspaces(true);
+                widgetViewer.window.setIgnoreMouseEvents(true);
+                widgetViewer.window.setSkipTaskbar(true);
+                widgetViewer.window.show();
 
-                win.on('closed', () => {
-                    win = undefined;
+                var image = electron.nativeImage.createFromPath(`${__dirname}/resources/images/IconTemplate.png`);
+                widgetViewer.tray = new electron.Tray(image);
+                widgetViewer.tray.setContextMenu(electron.Menu.buildFromTemplate(widgetViewer.trayMenu));
+
+                widgetViewer.window.on('closed', () => {
+                    widgetViewer.window = undefined;
                 });
 
                 resolve();
