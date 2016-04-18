@@ -1,10 +1,11 @@
 'use strict';
 
 const log = require('book');
+const electron = require('electron');
 
 const widgetLoader = require('./modules/widget-loader');
 const widgetServer = require('./modules/widget-server');
-const widgetViewer = require('./modules/widget-viewer');
+const widgetViewer = require('./modules/widget-viewer')(electron);
 
 module.exports = {
     init: function () {

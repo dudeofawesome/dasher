@@ -1,17 +1,22 @@
 var gulp = require('gulp');
-var fork;
+var spawn;
 
 var electron;
 gulp.task('start-electron', () => {
-    if (!fork) {
-        fork = require('child_process').fork;
+    if (!spawn) {
+        spawn = require('child_process').spawn;
     }
     if (electron) {
         electron.kill(0);
     }
 
-    console.log(`${__dirname}/node_modules/.bin/electron`, `${__dirname}/main.js`);
-    electron = fork(`${__dirname}/node_modules/.bin/electron`, [`${__dirname}/main.js`]);
+    electron = spawn(`${__dirname}/node_modules/.bin/electron`, [`${__dirname}/main.js`]);
+    electron.stdout.on('data', (data) => {
+        process.stdout.write(data.toString());
+    });
+    electron.on('error', (err) => {
+        console.error(err);
+    });
 });
 
 gulp.task('watch', () => {

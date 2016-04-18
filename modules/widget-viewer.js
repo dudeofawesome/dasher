@@ -1,55 +1,73 @@
 'use strict';
 
 const log = require('book');
-const electron = require('electron');
 
-let widgetViewer = {
-    init: function () {
-        return new Promise((resolve) => {
-            log.info('Initializing widget-viewer');
+module.exports = (electron) => {
+    let widgetViewer = {
+        app: undefined,
 
-            widgetViewer.app = electron.app;
+        init: () => {
+            return new Promise((resolve) => {
+                log.info('Initializing widget-viewer');
 
-            widgetViewer.app.on('ready', () => {
+                widgetViewer.app = electron.app;
+
+                widgetViewer.app.on('ready', () => {
+                    resolve();
+                });
+
+                widgetViewer.app.on('window-all-closed', () => {
+                    // On OS X it is common for applications and their menu bar
+                    // to stay active until the user quits explicitly with Cmd + Q
+                    if (process.platform != 'darwin') {
+                        widgetViewer.app.quit();
+                    }
+                });
+            });
+        },
+        start: () => {
+            return new Promise((resolve) => {
+                log.info('Starting widget-viewer');
+
+                widgetViewer.app.dock.hide();
+                var electronScreen = electron.screen;
+                var size = electronScreen.getPrimaryDisplay().workAreaSize;
+                var win = new electron.BrowserWindow({
+                    width: size.width,
+                    height: size.height,
+                    transparent: true,
+                    show: false,
+                    frame: false,
+                    hasShadow: false // ,
+                    // type: 'desktop'
+                });
+                win.loadURL(`file://${__dirname}/pages/widget-viewer/widget-viewer.html`);
+                win.maximize();
+                win.setResizable(false);
+                win.setMovable(false);
+                win.setFullScreenable(false);
+                win.setMinimizable(false);
+                // win.setClosable(false);
+                // win.setVisibleOnAllWorkspaces(true);
+                // win.setIgnoreMouseEvents(true);
+                win.setSkipTaskbar(true);
+                win.show();
+                win.webContents.openDevTools();
+
+                win.on('closed', () => {
+                    win = undefined;
+                });
+
                 resolve();
             });
-        });
-    },
-    start: function () {
-        return new Promise((resolve) => {
-            log.info('Starting widget-viewer');
-
-            widgetViewer.app.dock.hide();
-            var win = new electron.BrowserWindow({
-                width: 100,
-                height: 100,
-                transparent: true,
-                show: false,
-                frame: false,
-                hasShadow: false,
-                type: 'desktop'
+        },
+        stop: () => {
+            return new Promise((resolve) => {
+                log.info('Stopping widget-viewer');
+                resolve();
             });
-            win.loadURL('http://127.0.0.1:41416');
-            win.maximize();
-            win.setResizable(false);
-            win.setMovable(false);
-            win.setFullScreenable(false);
-            win.setMinimizable(false);
-            win.setClosable(false);
-            win.setVisibleOnAllWorkspaces(true);
-            win.setIgnoreMouseEvents(true);
-            win.setSkipTaskbar(true);
-            win.show();
+        }
+    };
 
-            resolve();
-        });
-    },
-    stop: function () {
-        return new Promise((resolve) => {
-            log.info('Stopping widget-viewer');
-            resolve();
-        });
-    }
+    return widgetViewer;
 };
-
-module.exports = widgetViewer;

@@ -1,0 +1,40 @@
+{
+  "name": "dasher",
+  "description": "Cross platform widget system",
+  "main": "main.js",
+  "authors": [
+    "Louis Orleans <louis@orleans.io> (http://orleans.io/)"
+  ],
+  "license": "GPL-2.0",
+  "keywords": [
+    "widget",
+    "widgets",
+    "dashboard",
+    "geektool",
+    "geek",
+    "tool",
+    "übersicth",
+    "ubersicht",
+    "uebersicht",
+    "overview"
+  ],
+  "homepage": "https://github.com/dudeofawesome/dasher",
+  "moduleType": [
+    "node"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "modules/pages/bower_components/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.4",
+    "angular-resource": "^1.5.3",
+    "angular-route": "^1.5.3",
+    "angular-messages": "^1.5.3",
+    "angular-sanitize": "^1.5.3"
+  }
+}

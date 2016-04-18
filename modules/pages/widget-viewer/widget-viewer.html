@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html ng-app="dasher">
+    <head>
+        <meta charset="UTF-8">
+        <title>Dasher</title>
+
+        <script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
+        <script type="text/javascript" src="../bower_components/angular-messages/angular-messages.min.js"></script>
+        <script type="text/javascript" src="../bower_components/angular-resource/angular-resource.min.js"></script>
+        <script type="text/javascript" src="../bower_components/angular-route/angular-route.min.js"></script>
+        <script type="text/javascript" src="../bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+        <script type="text/javascript" src="controller.js"></script>
+    </head>
+    <body ng-controller="DasherController as ctrlDasher">
+        {{ctrlDasher.test}}
+        <p>
+            <h1>Hello World!</h1>
+        </p>
+        <p>
+            {{ctrlDasher.widgets}}
+        </p>
+    </body>
+</html>
