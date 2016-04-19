@@ -2,7 +2,7 @@
 
 const log = require('book');
 
-module.exports = (electron) => {
+module.exports = (electron, widgetLoader) => {
     let widgetViewer = {
         app: undefined,
         window: undefined,
@@ -16,7 +16,7 @@ module.exports = (electron) => {
                 // electron.shell.showItemInFolder();
             }},
             {label: 'Open Widgets Folder', click: () => {
-                // electron.shell.showItemInFolder();
+                electron.shell.showItemInFolder(widgetLoader.widgetsFolder);
             }},
             {type: 'separator'},
             {label: 'Show Debug Console', click: () => {
