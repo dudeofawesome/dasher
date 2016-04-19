@@ -31,6 +31,19 @@ dasher.controller('DasherController', ['$document', '$rootScope', '$compile', ($
             widgetLoader.loadedWidgets.forEach((widget) => {
                 console.log(widget);
 
+                if (widget.styles) {
+                    if (!Array.isArray(widget.styles)) {
+                        widget.styles = [widget.styles];
+                    }
+                    widget.styles.forEach((style) => {
+                        var styleEl = document.createElement('link');
+                        styleEl.rel = 'stylesheet';
+                        styleEl.type = 'text/css';
+                        styleEl.href = `${widget.path}/${style}`;
+                        document.body.appendChild(styleEl);
+                    });
+                }
+
                 dasher.compileProvider.directive(widget.name, () => {
                     return widget;
                 });

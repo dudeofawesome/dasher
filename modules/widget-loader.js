@@ -82,6 +82,10 @@ let widgetLoader = {
                             fs.stat(`${searchFolder}/${folders[_folder]}`, (err, stats) => {
                                 if (stats.isDirectory()) {
                                     var plugin = require(`${searchFolder}/${folders[_folder]}`);
+                                    plugin.path = `${searchFolder}/${folders[_folder]}`;
+                                    if (plugin.templateUrl) {
+                                        plugin.templateUrl = `${searchFolder}/${folders[_folder]}/${plugin.templateUrl}`;
+                                    }
                                     widgetLoader.loadedWidgets.push(plugin);
                                     pluginsLoaded++;
                                     log.info('  ' + plugin.name);

@@ -12,6 +12,9 @@ module.exports = (electron) => {
                 electron.shell.openExternal('https://github.com/dudeofawesome/dasher/');
             }},
             {type: 'separator'},
+            {label: 'View Widget Gallery', click: () => {
+                // electron.shell.showItemInFolder();
+            }},
             {label: 'Open Widgets Folder', click: () => {
                 // electron.shell.showItemInFolder();
             }},

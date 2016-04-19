@@ -7,13 +7,8 @@ module.exports = {
     restrict: 'E',
     transclude: true,
     scope: {},
-    controller: function($scope, $element) {
-        var style = document.createElement('link');
-        style.rel = 'stylesheet';
-        style.type = 'text/css';
-        style.href = `${__dirname}/style.css`;
-        $element.append(style);
-
+    styles: 'style.css',
+    controller: ($scope, $element) => {
         $scope.time = Math.round(Date.now() / 1000);
         let msToNextSec = 1000 - (new Date()).getMilliseconds();
         setTimeout(() => {
@@ -25,7 +20,7 @@ module.exports = {
 
         $element.on('click', () => {
             clipboard.writeText(`${Math.round(Date.now() / 1000)}`);
-        })
+        });
     },
-    templateUrl: `${__dirname}/template.html`
+    templateUrl: `template.html`
 };

@@ -11,7 +11,7 @@ module.exports = {
     init: function () {
         log.info('Initializing Dasher');
         return new Promise((resolve, reject) => {
-            Promise.all([widgetLoader.init(), widgetServer.init(widgetLoader), widgetViewer.init(widgetServer)]).then(() => {
+            Promise.all([widgetViewer.init()]).then(() => {
                 resolve();
             }).catch((err) => {
                 console.log(err);
@@ -22,7 +22,7 @@ module.exports = {
     start: function () {
         log.info('Starting Dasher');
         return new Promise((resolve, reject) => {
-            Promise.all([widgetLoader.start(), widgetServer.start(), widgetViewer.start()]).then(() => {
+            Promise.all([widgetViewer.start()]).then(() => {
                 resolve();
             }).catch((err) => {
                 console.log(err);
@@ -33,7 +33,7 @@ module.exports = {
     stop: function () {
         log.info('Stopping Dasher');
         return new Promise((resolve, reject) => {
-            Promise.all([widgetLoader.stop(), widgetServer.stop(), widgetViewer.stop()]).then(() => {
+            Promise.all([widgetViewer.stop()]).then(() => {
                 resolve();
             }).catch((err) => {
                 console.log(err);
