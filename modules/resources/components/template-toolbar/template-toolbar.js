@@ -11,11 +11,18 @@ widgets.directive('templateToolbar', () => {
         controller: ($scope) => {
             let electronWindow = remote.getCurrentWindow();
 
+            $scope.platform = process.platform;
+
             $scope.close = electronWindow.close;
             $scope.minimize = electronWindow.minimize;
-            $scope.maximize = electronWindow.maximize;
-
-            $scope.platform = process.platform;
+            let darwinMaximize = (ev) => {
+                if (ev && ev.altKey) {
+                    electronWindow.maximize();
+                } else {
+                    electronWindow.setFullScreen(!electronWindow.isFullScreen());
+                }
+            };
+            $scope.maximize = $scope.platform === 'darwin' ? darwinMaximize : electronWindow.maximize;
         },
         templateUrl: `../../components/template-toolbar/template-toolbar.html`
     };
