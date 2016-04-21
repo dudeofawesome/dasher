@@ -35,6 +35,7 @@
     "angular-resource": "^1.5.3",
     "angular-route": "^1.5.3",
     "angular-messages": "^1.5.3",
-    "angular-sanitize": "^1.5.3"
+    "angular-sanitize": "^1.5.3",
+    "sass.js": "^0.9.9"
   }
 }

@@ -1,0 +1,121 @@
+template-toolbar {
+    .toolbar {
+        width: 100%;
+        height: 22px;
+
+        display: flex;
+        background-color: rgb(100, 100, 100);
+
+        -webkit-app-region: drag;
+
+        .buttons > * {
+            -webkit-app-region: no-drag;
+        }
+
+        &.darwin {
+            flex-direction: row;
+
+            .buttons {
+                margin-top: auto;
+                margin-left: 6px;
+                margin-bottom: auto;
+                display: flex;
+                flex-direction: row;
+                font-family: monospace;
+                font-weight: bold;
+
+                $close: rgb(237, 108, 96);
+                $minimize: rgb(245, 191, 79);
+                $maximize: rgb(100, 203, 87);
+
+                &:hover, &:active {
+                    .close {
+                        &::after {
+                            content: 'x';
+                        }
+                    }
+
+                    .minimize {
+                        &::after {
+                            content: '-';
+                        }
+                    }
+
+                    .maximize {
+                        &::after {
+                            content: '+';
+                        }
+                    }
+                }
+
+                div {
+                    width: 12px;
+                    height: 12px;
+                    margin-left: 6px;
+
+                    border-radius: 9px;
+
+                    &:first-child {
+                        margin-left: 0px;
+                    }
+                }
+
+                .close {
+                    position: relative;
+                    background-color: $close;
+
+                    &::after {
+                        position: absolute;
+                        top: -1px;
+                        left: 2px;
+                        content: ' ';
+                    }
+
+                    &:active {
+                        background-color: darken($close, 30%);
+                    }
+                }
+
+                .minimize {
+                    position: relative;
+                    background-color: $minimize;
+
+                    &::after {
+                        position: absolute;
+                        top: -1px;
+                        left: 2px;
+                        content: ' ';
+                    }
+
+                    &:active {
+                        background-color: darken($minimize, 30%);
+                    }
+                }
+
+                .maximize {
+                    position: relative;
+                    background-color: $maximize;
+
+                    &::after {
+                        position: absolute;
+                        top: -1px;
+                        left: 2px;
+                        content: ' ';
+                    }
+
+                    &:active {
+                        background-color: darken($maximize, 30%);
+                    }
+                }
+            }
+        }
+
+        &.win32 {
+            flex-direction: row-reverse;
+        }
+
+        &.linux {
+            flex-direction: row;
+        }
+    }
+}

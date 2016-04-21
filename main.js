@@ -4,14 +4,15 @@ const log = require('book');
 const electron = require('electron');
 
 const widgetLoader = require('./modules/widget-loader');
+const widgetGallery = require('./modules/widget-gallery')(electron, widgetLoader);
 // const widgetServer = require('./modules/widget-server');
-const widgetViewer = require('./modules/widget-viewer')(electron, widgetLoader);
+const widgetViewer = require('./modules/widget-viewer')(electron, widgetLoader, widgetGallery);
 
 module.exports = {
     init: function () {
         log.info('Initializing Dasher');
         return new Promise((resolve, reject) => {
-            Promise.all([widgetLoader.init(), widgetViewer.init()]).then(() => {
+            Promise.all([widgetLoader.init(), widgetViewer.init(), widgetGallery.init()]).then(() => {
                 resolve();
             }).catch((err) => {
                 console.log(err);
@@ -22,7 +23,7 @@ module.exports = {
     start: function () {
         log.info('Starting Dasher');
         return new Promise((resolve, reject) => {
-            Promise.all([widgetViewer.start()]).then(() => {
+            Promise.all([widgetViewer.start(), widgetGallery.start()]).then(() => {
                 resolve();
             }).catch((err) => {
                 console.log(err);
@@ -33,7 +34,7 @@ module.exports = {
     stop: function () {
         log.info('Stopping Dasher');
         return new Promise((resolve, reject) => {
-            Promise.all([widgetLoader.stop(), widgetViewer.stop()]).then(() => {
+            Promise.all([widgetLoader.stop(), widgetViewer.stop(), widgetGallery.stop()]).then(() => {
                 resolve();
             }).catch((err) => {
                 console.log(err);

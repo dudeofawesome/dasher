@@ -1,8 +1,13 @@
 body {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    margin: 0;
-}}
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  margin: 0;
+  display: flex;
+  flex-direction: column; }
+  body > * {
+    background-color: #fafafa; }
+    body > *:last-child {
+      flex-grow: 1; }

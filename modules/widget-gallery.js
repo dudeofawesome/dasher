@@ -2,12 +2,13 @@
 
 const log = require('book');
 
-module.exports = (app, widgetLoader) => {
+module.exports = (electron, widgetLoader) => {
     let widgetGallery = {
         window: undefined,
 
         init: () => {
             return new Promise((resolve) => {
+                log.info('Initializing widget-gallery');
                 resolve();
             });
         },
@@ -26,29 +27,18 @@ module.exports = (app, widgetLoader) => {
 
         show: () => {
             if (!widgetGallery.window) {
-                app.dock.hide();
+                electron.app.dock.show();
                 widgetGallery.window = new electron.BrowserWindow({
-                    width: size.width,
-                    height: size.height,
-                    transparent: true,
-                    show: false,
+                    // width: size.width,
+                    // height: size.height,
                     frame: false,
-                    hasShadow: false,
-                    type: 'desktop'
+                    show: false
                 });
-                widgetGallery.window.loadURL(`file://${__dirname}/resources/pages/widget-viewer/widget-viewer.html`);
-                widgetGallery.window.maximize();
-                widgetGallery.window.setResizable(false);
-                widgetGallery.window.setMovable(false);
-                widgetGallery.window.setFullScreenable(false);
-                widgetGallery.window.setMinimizable(false);
-                // widgetGallery.window.setClosable(false);
-                widgetGallery.window.setVisibleOnAllWorkspaces(true);
-                widgetGallery.window.setIgnoreMouseEvents(true);
-                widgetGallery.window.setSkipTaskbar(true);
+                widgetGallery.window.loadURL(`file://${__dirname}/resources/pages/widget-gallery/widget-gallery.html`);
                 widgetGallery.window.show();
 
                 widgetGallery.window.on('closed', () => {
+                    electron.app.dock.hide();
                     widgetGallery.window = undefined;
                 });
             }
