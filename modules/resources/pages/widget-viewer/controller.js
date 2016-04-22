@@ -1,3 +1,5 @@
+'use strict';
+
 var widgetLoader = require('../../../widget-loader');
 
 var dasher;
