@@ -31,7 +31,9 @@ module.exports = (electron, widgetLoader) => {
                 widgetGallery.window = new electron.BrowserWindow({
                     // width: size.width,
                     // height: size.height,
-                    frame: false,
+                    icon: electron.nativeImage.createFromPath(`${__dirname}/resources/images/IconTemplate.png`),
+                    frame: process.platform === 'darwin',
+                    titleBarStyle: 'hidden',
                     show: false
                 });
                 widgetGallery.window.loadURL(`file://${__dirname}/resources/pages/widget-gallery/widget-gallery.html`);
