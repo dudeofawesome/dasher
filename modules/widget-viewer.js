@@ -64,7 +64,6 @@ module.exports = (electron, widgetLoader, widgetGallery) => {
                     type: 'desktop'
                 });
                 widgetViewer.window.loadURL(`file://${__dirname}/resources/pages/widget-viewer/widget-viewer.html`);
-                widgetViewer.window.maximize();
                 widgetViewer.window.setResizable(false);
                 widgetViewer.window.setMovable(false);
                 widgetViewer.window.setFullScreenable(false);
