@@ -15,14 +15,18 @@ widgets.directive('templateToolbar', () => {
 
             $scope.close = electronWindow.close;
             $scope.minimize = electronWindow.minimize;
-            let darwinMaximize = (ev) => {
-                if (ev && ev.altKey) {
-                    electronWindow.maximize();
-                } else {
-                    electronWindow.setFullScreen(!electronWindow.isFullScreen());
-                }
-            };
-            $scope.maximize = $scope.platform === 'darwin' ? darwinMaximize : electronWindow.maximize;
+            $scope.maximize = electronWindow.maximize;
+
+            electronWindow.on('enter-full-screen', () => {
+                $scope.fullscreen = electronWindow.isFullScreen();
+                $scope.$apply();
+            });
+            electronWindow.on('leave-full-screen', () => {
+                $scope.fullscreen = electronWindow.isFullScreen();
+                $scope.$apply();
+            });
+
+            $scope.fullscreen = electronWindow.isFullScreen();
         },
         templateUrl: `../../components/template-toolbar/template-toolbar.html`
     };
