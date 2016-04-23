@@ -33,6 +33,7 @@
         "localStorage": false,
         "alert": false,
         "Power4": false,
+        "Sass": false,
 
         "send_message": false,
         "send_submit": false,

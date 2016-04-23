@@ -82,6 +82,9 @@ let widgetLoader = {
                             fs.stat(`${searchFolder}/${folders[_folder]}`, (err, stats) => {
                                 if (stats.isDirectory()) {
                                     var plugin = require(`${searchFolder}/${folders[_folder]}`);
+                                    if (Array.isArray(plugin)) {
+                                        plugin = widgetLoader.injectWidgetDepencies(plugin);
+                                    }
                                     plugin.path = `${searchFolder}/${folders[_folder]}`;
                                     if (plugin.templateUrl) {
                                         plugin.templateUrl = `${searchFolder}/${folders[_folder]}/${plugin.templateUrl}`;
@@ -104,7 +107,12 @@ let widgetLoader = {
 
             loadPlugins(widgetLoader.widgetsFolder);
         });
-    }// ,
+    },
+    injectWidgetDepencies: (widget) => {
+        let consctructor = widget[widget.length - 1];
+        return consctructor();
+    }
+    // ,
     // activateWidget: function (plugin) {
     //     if (this.activatedPlugins.indexOf(plugin) === -1) {
     //         if (this.loadedPlugins[plugin] !== undefined) {
