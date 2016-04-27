@@ -4,6 +4,12 @@ let fs = require('fs-extra-promise');
 const os = require('os');
 const log = require('book');
 
+const widgetAPI = {
+    $dasherSettings: require('./widget-libs/dasher-settings')(require('electron'), require('electron-json-storage'))
+};
+
+console.log(widgetAPI);
+
 let widgetLoader = {
     widgetsFolder: undefined,
     loadedWidgets: [],
@@ -109,8 +115,20 @@ let widgetLoader = {
         });
     },
     injectWidgetDepencies: (widget) => {
-        let consctructor = widget[widget.length - 1];
-        return consctructor();
+        if (Array.isArray(widget)) {
+            let dependencies = [];
+            for (let i = 0; i < widget.length - 1; i++) {
+                dependencies.push(widgetAPI[widget[i]]);
+                if (dependencies[dependencies.length - 1]) {
+                    dependencies[dependencies.length - 1] = dependencies[dependencies.length - 1].api;
+                }
+            }
+            let consctructor = widget[widget.length - 1];
+            // TODO: figure out a better way to pass the dependency array
+            return consctructor(dependencies[0], dependencies[1], dependencies[2], dependencies[3], dependencies[4], dependencies[5]);
+        } else {
+            return widget();
+        }
     }
     // ,
     // activateWidget: function (plugin) {
