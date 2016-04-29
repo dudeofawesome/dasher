@@ -1,0 +1,34 @@
+<html ng-app="dialog">
+    <head>
+        <script type="text/javascript" src="../../pages/bower_components/angular/angular.min.js"></script>
+        <script type="text/javascript" src="./script.js"></script>
+        <title></title>
+    </head>
+    <body ng-controller="DialogController">
+        <div style="display:flex; flex-direction:column;">
+            <div style="display:flex; flex-direction:column;">
+                <div ng-repeat="question in questions" style="display:flex; flex-direction:row;">
+                    <div ng-if="question.type === 'string' || !question.type || question.type === 'undefined'">
+                        <label>{{question.question}}</label><input type="text" ng-model="question.answer" />
+                    </div>
+                    <div ng-if="question.type === 'number'">
+                        <label>{{question.question}}</label><input type="number" ng-model="question.answer" />
+                    </div>
+                    <div ng-if="question.type === 'slider'">
+                        <label>{{question.question}}</label><input type="range" ng-model="question.answer" />
+                    </div>
+                    <div ng-if="question.type === 'boolean'">
+                        <label>{{question.question}}</label><input type="checkbox" ng-model="question.answer" />
+                    </div>
+                    <div ng-if="question.type === 'color'">
+                        <label>{{question.question}}</label><input type="color" ng-model="question.answer" />
+                    </div>
+                    <div ng-if="question.type === 'password'">
+                        <label>{{question.question}}</label><input type="password" ng-model="question.answer" />
+                    </div>
+                </div>
+            </div>
+            <input type="button" value="{{accept}}" ng-click="submit()" />
+        </div>
+    </body>
+</html>

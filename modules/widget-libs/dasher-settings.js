@@ -3,12 +3,27 @@
 module.exports = (electron, storage) => {
     return {
         api: {
-            get: (key) => {
+            get: (key, question, type) => {
                 return new Promise((resolve, reject) => {
                     storage.get(key, (err, value) => {
                         if (err || !value || Object.keys(value).length === 0) {
                             let win = new electron.remote.BrowserWindow({
                                 show: false
+                            });
+                            win.loadURL(`file://${process.cwd()}/modules/resources/pages/empty/empty.html`);
+                            let js = `
+                                scope.questions = [
+                                    {
+                                        key: '${key}',
+                                        question: '${question || key}',
+                                        type: '${type}'
+                                    }
+                                ];
+                                scope.$apply();
+                            `;
+                            win.webContents.executeJavaScript(js);
+                            win.on('message', (message) => {
+                                console.log(message);
                             });
                             win.show();
                             reject(err);
