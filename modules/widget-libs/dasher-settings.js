@@ -22,8 +22,9 @@ module.exports = (electron, storage) => {
                                 scope.$apply();
                             `;
                             win.webContents.executeJavaScript(js);
-                            win.on('message', (message) => {
-                                console.log(message);
+
+                            win.webContents.on('ipc-message', (event, arg) => {
+                                console.log(event, arg);
                             });
                             win.show();
                             reject(err);

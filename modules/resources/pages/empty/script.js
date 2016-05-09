@@ -1,4 +1,4 @@
-const ipcRenderer = require('ipcRenderer');
+const electron = require('electron');
 
 var ngApp;
 
@@ -9,8 +9,7 @@ var scope;
 
     ngApp.controller('DialogController', ['$scope', function ($scope) {
         $scope.submit = () => {
-            alert(JSON.stringify($scope.questions));
-            ipcRenderer.send('message', $scope.questions);
+            electron.ipcRenderer.send('empty-response', $scope.questions);
         };
         $scope.accept = 'Save';
         scope = $scope;

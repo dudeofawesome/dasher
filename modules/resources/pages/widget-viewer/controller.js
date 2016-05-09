@@ -20,7 +20,6 @@ dasher.controller('DasherController', ['$document', '$rootScope', '$compile', '$
 
     ctrlDasher.test = 'YES!';
     ctrlDasher.widgets = widgetLoader.loadedWidgets;
-    console.log(ctrlDasher.widgets);
 
     var snakeCase = (string) => {
         var SNAKE_CASE_REGEXP = /[A-Z]/g;
@@ -35,7 +34,6 @@ dasher.controller('DasherController', ['$document', '$rootScope', '$compile', '$
     widgetLoader.init().then(() => {
         widgetLoader.start().then(() => {
             widgetLoader.loadedWidgets.forEach((widget) => {
-                console.log(widget);
 
                 if (widget.styles) {
                     if (!Array.isArray(widget.styles)) {
@@ -68,15 +66,11 @@ dasher.controller('DasherController', ['$document', '$rootScope', '$compile', '$
                 });
 
                 $rootScope.$apply(() => {
-                    // let widgetTag = document.createElement(widget.name);
                     let widgetTag = $compile(`<${snakeCase(widget.name)}></${snakeCase(widget.name)}>`)($rootScope);
                     document.body.appendChild(widgetTag[0]);
-                    // $document.append(widgetTag);
-                    console.log('OH YEAH');
                 });
             });
 
-            console.log(widgets);
         });
     });
 
