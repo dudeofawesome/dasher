@@ -10,6 +10,7 @@ var scope;
     ngApp.controller('DialogController', ['$scope', function ($scope) {
         $scope.submit = () => {
             electron.ipcRenderer.send('empty-response', $scope.questions);
+            window.close();
         };
         $scope.accept = 'Save';
         scope = $scope;
