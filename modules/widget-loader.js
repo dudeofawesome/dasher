@@ -124,8 +124,7 @@ let widgetLoader = {
                 }
             }
             let consctructor = widget[widget.length - 1];
-            // TODO: figure out a better way to pass the dependency array
-            return consctructor.apply(null, dependencies);
+            return consctructor(...dependencies);
         } else {
             return widget();
         }
