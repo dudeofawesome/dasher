@@ -1,9 +1,9 @@
 'use strict';
 
 module.exports = (electron, storage) => {
-    return {
+    let dasherSettings = {
         api: {
-            get: (key, question, type) => {
+            get: (key, question, type, disableSave) => {
                 return new Promise((resolve, reject) => {
                     if (Array.isArray(key)) {
                         let requestedQuestions = key;
@@ -40,7 +40,24 @@ module.exports = (electron, storage) => {
                             win.webContents.executeJavaScript(js);
 
                             win.webContents.on('ipc-message', (event, responses) => {
-                                resolve(responses[1]);
+                                if (disableSave) {
+                                    resolve(responses[1]);
+                                } else {
+                                    let resolvedStores = 0;
+                                    for (let i in responses[1]) {
+                                        dasherSettings.api.set(responses[1][i].key, responses[1][i].answer).then(() => {
+                                            resolvedStores++;
+                                            if (resolvedStores >= responses[1].length) {
+                                                resolve(responses[1]);
+                                            }
+                                        }).catch(() => {
+                                            resolvedStores++;
+                                            if (resolvedStores >= responses[1].length) {
+                                                resolve(responses[1]);
+                                            }
+                                        });
+                                    }
+                                }
                             });
 
                             win.on('window-close', () => {
@@ -70,7 +87,15 @@ module.exports = (electron, storage) => {
                                 win.webContents.executeJavaScript(js);
 
                                 win.webContents.on('ipc-message', (event, responses) => {
-                                    resolve(responses[1][0].answer);
+                                    if (disableSave) {
+                                        resolve(responses[1]);
+                                    } else {
+                                        dasherSettings.api.set(responses[1][0].key, responses[1][0].answer).then(() => {
+                                            resolve(responses[1][0].answer);
+                                        }).catch(() => {
+                                            resolve(responses[1][0].answer);
+                                        });
+                                    }
                                 });
 
                                 win.on('window-close', () => {
@@ -114,4 +139,6 @@ module.exports = (electron, storage) => {
             });
         }
     };
+
+    return dasherSettings;
 };
