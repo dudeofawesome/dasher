@@ -30,9 +30,11 @@ module.exports = (electron, storage) => {
                             }
 
                             let win = new electron.remote.BrowserWindow({
+                                frame: process.platform === 'darwin',
+                                titleBarStyle: 'hidden',
                                 show: false
                             });
-                            win.loadURL(`file://${process.cwd()}/modules/resources/pages/empty/empty.html`);
+                            win.loadURL(`file://${process.cwd()}/modules/resources/pages/settings/settings.html`);
                             let js = `
                                 scope.questions = ${JSON.stringify(missingQuestions)};
                                 scope.$apply();

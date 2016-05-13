@@ -27,5 +27,13 @@ template-toolbar {
         &.linux {
             flex-direction: row;
         }
+
+        .title {
+            width: 100%;
+            color: rgb(250, 250, 250);
+            font-family: roboto;
+            font-weight: 100;
+            text-align: center;
+        }
     }
 }

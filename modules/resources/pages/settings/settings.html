@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html ng-app="settings">
+    <head>
+        <meta charset="UTF-8">
+        <title>Settings</title>
+
+        <script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
+        <script type="text/javascript" src="../bower_components/angular-messages/angular-messages.min.js"></script>
+        <script type="text/javascript" src="../bower_components/angular-resource/angular-resource.min.js"></script>
+        <script type="text/javascript" src="../bower_components/angular-route/angular-route.min.js"></script>
+        <script type="text/javascript" src="../bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+
+        <script type="text/javascript" src="./controller.js"></script>
+        <script type="text/javascript" src="../../components/template-toolbar/template-toolbar.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body ng-controller="SettingsController as ctrlSettings" style="background-color: rgb(100, 100, 100);">
+        <template-toolbar close="ctrlSettings.close"></template-toolbar>
+        <div>
+            <h1>Settings</h1>
+        </div>
+        <div style="display:flex; flex-direction:column;">
+            <div style="display:flex; flex-direction:column;">
+                <div ng-repeat="question in questions" style="display:flex; flex-direction:row;">
+                    <div ng-if="question.type === 'string' || !question.type || question.type === 'undefined'">
+                        <label>{{question.question}}</label><input type="text" ng-model="question.answer" />
+                    </div>
+                    <div ng-if="question.type === 'number'">
+                        <label>{{question.question}}</label><input type="number" ng-model="question.answer" />
+                    </div>
+                    <div ng-if="question.type === 'slider'">
+                        <label>{{question.question}}</label><input type="range" ng-model="question.answer" />
+                    </div>
+                    <div ng-if="question.type === 'boolean'">
+                        <label>{{question.question}}</label><input type="checkbox" ng-model="question.answer" />
+                    </div>
+                    <div ng-if="question.type === 'color'">
+                        <label>{{question.question}}</label><input type="color" ng-model="question.answer" />
+                    </div>
+                    <div ng-if="question.type === 'password'">
+                        <label>{{question.question}}</label><input type="password" ng-model="question.answer" />
+                    </div>
+                </div>
+            </div>
+            <input type="button" value="{{accept}}" ng-click="submit()" />
+        </div>
+    </body>
+</html>

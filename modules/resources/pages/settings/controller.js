@@ -1,11 +1,20 @@
-var settings;
+var scope;
 
-settings = angular.module('settings', ['widgets']);
+(function () {
+    const electron = require('electron');
 
-settings.controller('SettingsController', () => {
-    let ctrlSettings = {};
+    var settings;
 
-    ctrlSettings.platform = process.platform;
+    settings = angular.module('settings', ['widgets']);
 
-    return ctrlSettings;
-});
+    settings.controller('SettingsController', ['$scope', ($scope) => {
+        $scope.platform = process.platform;
+
+        $scope.submit = () => {
+            electron.ipcRenderer.send('empty-response', $scope.questions);
+            window.close();
+        };
+        $scope.accept = 'Save';
+        scope = $scope;
+    }]);
+})();

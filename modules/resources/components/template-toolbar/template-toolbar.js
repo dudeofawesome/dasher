@@ -27,6 +27,8 @@ widgets.directive('templateToolbar', () => {
             });
 
             $scope.fullscreen = electronWindow.isFullScreen();
+
+            $scope.title = document.title;
         },
         templateUrl: `../../components/template-toolbar/template-toolbar.html`
     };
