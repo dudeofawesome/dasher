@@ -77,7 +77,8 @@ html, body {
   right: 0px;
   bottom: 0px;
   margin: 0;
-  overflow: hidden; }
+  overflow: hidden;
+  background: transparent; }
 
 html {
   margin-bottom: 44px; }

@@ -9,10 +9,14 @@
         <script type="text/javascript" src="../bower_components/angular-resource/angular-resource.min.js"></script>
         <script type="text/javascript" src="../bower_components/angular-route/angular-route.min.js"></script>
         <script type="text/javascript" src="../bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+        <script type="text/javascript" src="../bower_components/angular-aria/angular-aria.min.js"></script>
+        <script type="text/javascript" src="../bower_components/angular-animate/angular-animate.min.js"></script>
+        <script type="text/javascript" src="../bower_components/angular-material/angular-material.min.js"></script>
 
-        <script type="text/javascript" src="./controller.js"></script>
         <script type="text/javascript" src="../../components/template-toolbar/template-toolbar.js"></script>
+        <script type="text/javascript" src="./controller.js"></script>
 
+        <link rel="stylesheet" href="../bower_components/angular-material/angular-material.min.css">
         <link rel="stylesheet" type="text/css" href="style.css">
     </head>
     <body ng-controller="SettingsController as ctrlSettings" style="background-color: rgb(100, 100, 100);">
@@ -22,28 +26,37 @@
         </div>
         <div style="display:flex; flex-direction:column;">
             <div style="display:flex; flex-direction:column;">
-                <div ng-repeat="question in questions" style="display:flex; flex-direction:row;">
-                    <div ng-if="question.type === 'string' || !question.type || question.type === 'undefined'">
-                        <label>{{question.question}}</label><input type="text" ng-model="question.answer" />
+                <div ng-repeat="question in questions" style="display:flex; flex-direction:row;" ng-switch="question.type">
+                    <md-input-container ng-switch-when="number">
+                        <label>{{question.question}}</label>
+                        <input ng-model="question.answer" type="number">
+                    </md-input-container>
+                    <div ng-switch-when="slider" layout>
+                        <div flex="10" layout layout-align="center center">
+                            <span class="md-body-1">{{question.question}}</span>
+                        </div>
+                        <md-slider flex md-discrete ng-model="question.answer" step="1" min="1" max="5" aria-label="{{question.question}}"></md-slider>
                     </div>
-                    <div ng-if="question.type === 'number'">
-                        <label>{{question.question}}</label><input type="number" ng-model="question.answer" />
+                    <div ng-switch-when="boolean">
+                        <md-checkbox ng-model="question.answer" aria-label="{{question.question}}">
+                            {{question.question}}
+                        </md-checkbox>
                     </div>
-                    <div ng-if="question.type === 'slider'">
-                        <label>{{question.question}}</label><input type="range" ng-model="question.answer" />
-                    </div>
-                    <div ng-if="question.type === 'boolean'">
-                        <label>{{question.question}}</label><input type="checkbox" ng-model="question.answer" />
-                    </div>
-                    <div ng-if="question.type === 'color'">
-                        <label>{{question.question}}</label><input type="color" ng-model="question.answer" />
-                    </div>
-                    <div ng-if="question.type === 'password'">
-                        <label>{{question.question}}</label><input type="password" ng-model="question.answer" />
-                    </div>
+                    <md-input-container ng-switch-when="color">
+                        <label>{{question.question}}</label>
+                        <input ng-model="question.answer" type="color">
+                    </md-input-container>
+                    <md-input-container ng-switch-when="password">
+                        <label>{{question.question}}</label>
+                        <input ng-model="question.answer" type="password">
+                    </md-input-container>
+                    <md-input-container ng-switch-default>
+                        <label>{{question.question}}</label>
+                        <input ng-model="question.answer" type="text">
+                    </md-input-container>
                 </div>
             </div>
-            <input type="button" value="{{accept}}" ng-click="submit()" />
+            <md-button ng-click="submit()">{{accept}}</md-button>
         </div>
     </body>
 </html>

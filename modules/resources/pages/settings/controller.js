@@ -5,7 +5,7 @@ var scope;
 
     var settings;
 
-    settings = angular.module('settings', ['widgets']);
+    settings = angular.module('settings', ['ngMaterial', 'UIwidgets']);
 
     settings.controller('SettingsController', ['$scope', ($scope) => {
         $scope.platform = process.platform;

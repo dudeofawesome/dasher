@@ -2,9 +2,9 @@
 
 const remote = require('remote');
 
-const widgets = angular.module('widgets', []);
+const UIwidgets = angular.module('UIwidgets', []);
 
-widgets.directive('templateToolbar', () => {
+UIwidgets.directive('templateToolbar', () => {
     return {
         restrict: 'E',
         transclude: true,
